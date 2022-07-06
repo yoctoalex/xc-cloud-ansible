@@ -1,0 +1,16 @@
+namespace: yoctoalex
+name: xc_cloud_modules
+version: 0.0.1
+readme: README.md
+authors:
+  - Alex Shemyakin
+description: Collection to manage XC Cloud
+license: GPL-3.0-only
+tags:
+  - f5
+  - cloud
+dependencies: {}
+repository: https://github.com/yoctoalex/xc-cloud-ansible
+documentation: https://github.com/yoctoalex/xc-cloud-ansible
+homepage: https://github.com/yoctoalex/xc-cloud-ansible
+issues: https://github.com/yoctoalex/xc-cloud-ansible/issues
