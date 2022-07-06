@@ -9,8 +9,9 @@ license: GPL-3.0-only
 tags:
   - f5
   - cloud
-dependencies: {}
 repository: https://github.com/yoctoalex/xc-cloud-ansible
 documentation: https://github.com/yoctoalex/xc-cloud-ansible
 homepage: https://github.com/yoctoalex/xc-cloud-ansible
 issues: https://github.com/yoctoalex/xc-cloud-ansible/issues
+dependencies:
+  ansible.netcommon: ">=2.0.0"
