@@ -10,7 +10,6 @@ from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.six import iteritems
 from collections import defaultdict
 
-import pydevd_pycharm
 
 class AnsibleF5Parameters(object):
     def __init__(self, *args, **kwargs):
