@@ -10,8 +10,8 @@ DOCUMENTATION = r'''
 ---
 module: namespaces
 short_description: Manage xC namespaces
-description: 
-    - namespace creates logical independent workspace within a tenant. 
+description:
+    - namespace creates logical independent workspace within a tenant.
       Within a namespace contained objects should have unique names.
 version_added: "0.0.1"
 options:
@@ -20,7 +20,7 @@ options:
             type: str
             required: True
             description:
-                - This is the name of configuration object. It has to be unique within the namespace. 
+                - This is the name of configuration object. It has to be unique within the namespace.
                   It can only be specified during create API and cannot be changed during replace API.
                   The value of name has to follow DNS-1035 format.
         labels:
@@ -29,7 +29,7 @@ options:
                   objects as chosen by the user. Values specified here will be used by selector expression
             type: object
         annotations:
-            description: 
+            description:
                 - Annotations is an unstructured key value map stored with a resource
                   that may be set by external tools to store and retrieve arbitrary metadata.
                   They are not queryable and should be preserved when modifying objects.
@@ -94,10 +94,6 @@ spec:
 '''
 
 import time
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -226,7 +222,7 @@ class ModuleManager(object):
         return False
 
     def create(self):
-        uri = f"/api/web/namespaces"
+        uri = "/api/web/namespaces"
         response = self.client.api.post(url=uri, json=self.want.to_update())
         if response.status not in [200, 201, 202]:
             raise F5ModuleError(response.content)

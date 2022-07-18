@@ -1,6 +1,6 @@
 namespace: yoctoalex
 name: xc_cloud_modules
-version: 0.0.2
+version: 0.0.4
 readme: README.md
 authors:
   - Alex Shemyakin
@@ -9,6 +9,9 @@ license: GPL-3.0-only
 tags:
   - f5
   - cloud
+  - f5_distributed_cloud_services
+  - f5_distributed_cloud
+  - f5_cloud
 repository: https://github.com/yoctoalex/xc-cloud-ansible
 documentation: https://github.com/yoctoalex/xc-cloud-ansible
 homepage: https://github.com/yoctoalex/xc-cloud-ansible

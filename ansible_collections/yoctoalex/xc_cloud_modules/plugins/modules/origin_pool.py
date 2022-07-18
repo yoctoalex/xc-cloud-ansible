@@ -10,13 +10,13 @@ DOCUMENTATION = r'''
 ---
 module: origin_pool
 short_description: Manage Origin pool
-description: 
+description:
     - Origin pool is a view to create cluster and endpoints that can be used in HTTP loadbalancer or TCP loadbalancer
 version_added: "0.0.1"
 options:
     metadata:
         annotations:
-            description: 
+            description:
                 - Annotations is an unstructured key value map stored with a resource
                   that may be set by external tools to store and retrieve arbitrary metadata.
                   They are not queryable and should be preserved when modifying objects.
@@ -38,7 +38,7 @@ options:
             type: str
             required: True
             description:
-                - This is the name of configuration object. It has to be unique within the namespace. 
+                - This is the name of configuration object. It has to be unique within the namespace.
                   It can only be specified during create API and cannot be changed during replace API.
                   The value of name has to follow DNS-1035 format.
         namespace:
@@ -106,7 +106,7 @@ RETURN = r'''
 ---
 metadata:
     annotations:
-        description: 
+        description:
             - Annotations is an unstructured key value map stored with a resource
               that may be set by external tools to store and retrieve arbitrary metadata.
               They are not queryable and should be preserved when modifying objects.
@@ -128,7 +128,7 @@ metadata:
         type: str
         required: True
         description:
-            - This is the name of configuration object. It has to be unique within the namespace. 
+            - This is the name of configuration object. It has to be unique within the namespace.
               It can only be specified during create API and cannot be changed during replace API.
               The value of name has to follow DNS-1035 format.
     namespace:
@@ -142,11 +142,6 @@ spec:
         - Shape of the Origin Pool specification
           https://docs.cloud.f5.com/docs/api/views-origin-pool
 '''
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 

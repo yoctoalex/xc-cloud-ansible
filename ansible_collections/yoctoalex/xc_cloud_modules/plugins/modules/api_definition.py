@@ -10,17 +10,17 @@ DOCUMENTATION = r'''
 ---
 module: api_definition
 short_description: Manage xC API Definition
-description: 
-    - The api_definition construct provides a mechanism to create api_groups based on referred OpenAPI specs. 
+description:
+    - The api_definition construct provides a mechanism to create api_groups based on referred OpenAPI specs.
       Default api_groups, which are built automatically, include a group containing all the operations
-      specified in swaggers; a group defining all possible requests for the given base urls. 
-      In addition, we create default api-groups by a predefined OpenAPI extension, for example x-volterra-apigroup. 
+      specified in swaggers; a group defining all possible requests for the given base urls.
+      In addition, we create default api-groups by a predefined OpenAPI extension, for example x-volterra-apigroup.
       http_loadbalancer can refer api_definition object and create access policy rules based on its api-groups.
 version_added: "0.0.1"
 options:
     metadata:
         annotations:
-            description: 
+            description:
                 - Annotations is an unstructured key value map stored with a resource
                   that may be set by external tools to store and retrieve arbitrary metadata.
                   They are not queryable and should be preserved when modifying objects.
@@ -42,7 +42,7 @@ options:
             type: str
             required: True
             description:
-                - This is the name of configuration object. It has to be unique within the namespace. 
+                - This is the name of configuration object. It has to be unique within the namespace.
                   It can only be specified during create API and cannot be changed during replace API.
                   The value of name has to follow DNS-1035 format.
         namespace:
@@ -101,7 +101,7 @@ RETURN = r'''
 ---
 metadata:
     annotations:
-        description: 
+        description:
             - Annotations is an unstructured key value map stored with a resource
               that may be set by external tools to store and retrieve arbitrary metadata.
               They are not queryable and should be preserved when modifying objects.
@@ -123,7 +123,7 @@ metadata:
         type: str
         required: True
         description:
-            - This is the name of configuration object. It has to be unique within the namespace. 
+            - This is the name of configuration object. It has to be unique within the namespace.
               It can only be specified during create API and cannot be changed during replace API.
               The value of name has to follow DNS-1035 format.
     namespace:
@@ -140,11 +140,6 @@ spec:
         description: List of api_groups belonging to this api_definition.
         type: Array of objects (ApiGroupSummary)
 '''
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 

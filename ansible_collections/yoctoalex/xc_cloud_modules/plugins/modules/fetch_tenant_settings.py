@@ -10,7 +10,7 @@ DOCUMENTATION = r'''
 ---
 module: fetch_tenant_settings
 short_description: Tenant Settings
-description: 
+description:
     - Receive current tenant settings.
 version_added: "0.0.1"
 '''
@@ -81,11 +81,6 @@ state:
         - Tenant states
     type: bool
 '''
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -220,7 +215,6 @@ class ModuleManager(object):
     def exec_module(self):
         changed = False
         result = dict()
-        state = self.want.state
 
         self.exists()
 
@@ -230,7 +224,7 @@ class ModuleManager(object):
         return result
 
     def exists(self):
-        uri = f"/api/web/namespaces/system/tenant/settings"
+        uri = "/api/web/namespaces/system/tenant/settings"
         response = self.client.api.get(url=uri)
         if response.status == 404:
             return False

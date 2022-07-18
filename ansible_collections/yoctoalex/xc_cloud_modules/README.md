@@ -20,7 +20,7 @@ Installing the Build
     git clone git@github.com:yoctoalex/xc-cloud-ansible.git
     cd ./xc-cloud-ansible
     ansible-galaxy collection build --force
-    ansible-galaxy collection install yoctoalex-xc_cloud_modules-0.0.2.tar.gz 
+    ansible-galaxy collection install yoctoalex-xc_cloud_modules-0.0.4.tar.gz 
 
     # Approach 2
     # To install from the Ansible Galaxy

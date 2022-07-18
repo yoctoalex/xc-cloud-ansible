@@ -10,13 +10,13 @@ DOCUMENTATION = r'''
 ---
 module: application_firewall
 short_description: Manage xC Application Firewall
-description: 
+description:
     - WAF Configuration
 version_added: "0.0.1"
 options:
     metadata:
         annotations:
-            description: 
+            description:
                 - Annotations is an unstructured key value map stored with a resource
                   that may be set by external tools to store and retrieve arbitrary metadata.
                   They are not queryable and should be preserved when modifying objects.
@@ -38,7 +38,7 @@ options:
             type: str
             required: True
             description:
-                - This is the name of configuration object. It has to be unique within the namespace. 
+                - This is the name of configuration object. It has to be unique within the namespace.
                   It can only be specified during create API and cannot be changed during replace API.
                   The value of name has to follow DNS-1035 format.
         namespace:
@@ -127,7 +127,7 @@ EXAMPLES = r'''
   environment:
     XC_API_TOKEN: "your_api_token"
     XC_TENANT: "console.ves.volterra.io"
-    
+
   tasks:
     - name: create app firewall
       application_firewall:
@@ -156,14 +156,14 @@ EXAMPLES = r'''
           default_anonymization: {}
           blocking_page:
             response_code: "Forbidden"
-            blocking_page: "string:///PGh0bWw+PGhlYWQ+PHRpdGxlPlJlcXVlc3QgUmVqZWN0ZWQ8L3RpdGxlPjwvaGVhZD48Ym9keT5UaGUgcmVxdWVzdGVkIFVSTCB3YXMgcmVqZWN0ZWQuIFBsZWFzZSBjb25zdWx0IHdpdGggeW91ciBhZG1pbmlzdHJhdG9yLjxici8+PGJyLz5Zb3VyIHN1cHBvcnQgSUQgaXM6IHt7cmVxdWVzdF9pZH19PGJyLz48YnIvPjxhIGhyZWY9ImphdmFzY3JpcHQ6aGlzdG9yeS5iYWNrKCkiPltHbyBCYWNrXTwvYT48L2JvZHk+PC9odG1sPg=="
+            blocking_page: "string:///yeS5iYWNrKCki....WNrXTwvYT48L2JvZHk+PC9odG1sPg=="
 '''
 
 RETURN = r'''
 ---
 metadata:
     annotations:
-        description: 
+        description:
             - Annotations is an unstructured key value map stored with a resource
               that may be set by external tools to store and retrieve arbitrary metadata.
               They are not queryable and should be preserved when modifying objects.
@@ -185,7 +185,7 @@ metadata:
         type: str
         required: True
         description:
-            - This is the name of configuration object. It has to be unique within the namespace. 
+            - This is the name of configuration object. It has to be unique within the namespace.
               It can only be specified during create API and cannot be changed during replace API.
               The value of name has to follow DNS-1035 format.
     namespace:
@@ -247,11 +247,6 @@ spec:
         description:
             - This can be used for messages where no values are needed
 '''
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 

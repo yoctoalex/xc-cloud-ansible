@@ -10,7 +10,7 @@ DOCUMENTATION = r'''
 ---
 module: stored_object
 short_description: Manage Service Policies
-description: 
+description:
     - A service_policy object consists of an unordered list of predicates and a list of service policy rules.
 version_added: "0.0.1"
 options:
@@ -24,7 +24,7 @@ options:
           - absent
           - fetch
         default: present
-    
+
     bytes_value:
         description:
             - Exclusive with [string_value] Binary object contents. Should be encoded in base64 scheme.
@@ -129,7 +129,7 @@ metadata:
         description:
             - Version of the stored object
         type: str
-        required: True    
+        required: True
 status:
     type: str
     choices:
@@ -138,14 +138,9 @@ status:
         - STORED_OBJECT_STATUS_UPDATED
         - STORED_OBJECT_STATUS_ALREADY_EXISTS
     description:
-        - The stored object status represents status of create object response 
+        - The stored object status represents status of create object response
           if object got created, updated or already exists.
 '''
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -221,6 +216,7 @@ class ApiParameters(Parameters):
     @property
     def content_format(self):
         return self._values['content_format']
+
 
 class Changes(Parameters):
     def to_return(self):

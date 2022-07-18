@@ -10,7 +10,7 @@ DOCUMENTATION = r'''
 ---
 module: virtual_kubernetes
 short_description: Manage Virtual Kubernetes
-description: 
+description:
     - Virtual K8s object exposes a Kubernetes API endpoint in the namespace that operates on all
       the physical Kubernetes clusters in each of the sites that are selected
       by the virtual-site referred to in the object.
@@ -18,7 +18,7 @@ version_added: "0.0.1"
 options:
     metadata:
         annotations:
-            description: 
+            description:
                 - Annotations is an unstructured key value map stored with a resource
                   that may be set by external tools to store and retrieve arbitrary metadata.
                   They are not queryable and should be preserved when modifying objects.
@@ -40,7 +40,7 @@ options:
             type: str
             required: True
             description:
-                - This is the name of configuration object. It has to be unique within the namespace. 
+                - This is the name of configuration object. It has to be unique within the namespace.
                   It can only be specified during create API and cannot be changed during replace API.
                   The value of name has to follow DNS-1035 format.
         namespace:
@@ -60,10 +60,10 @@ options:
           - fetch
         default: present
     spec:
-        description: 
+        description:
             - Create virtual_k8s will create the object in the storage backend for namespace metadata.namespace
               https://docs.cloud.f5.com/docs/api/virtual-k8s
-        type: object (Virtual K8s)    
+        type: object (Virtual K8s)
     wait:
         description:
             - Wait until the object will be created on cloud.
@@ -103,7 +103,7 @@ RETURN = r'''
 ---
 metadata:
     annotations:
-        description: 
+        description:
             - Annotations is an unstructured key value map stored with a resource
               that may be set by external tools to store and retrieve arbitrary metadata.
               They are not queryable and should be preserved when modifying objects.
@@ -125,7 +125,7 @@ metadata:
         type: str
         required: True
         description:
-            - This is the name of configuration object. It has to be unique within the namespace. 
+            - This is the name of configuration object. It has to be unique within the namespace.
               It can only be specified during create API and cannot be changed during replace API.
               The value of name has to follow DNS-1035 format.
     namespace:
@@ -145,17 +145,13 @@ state:
       - fetch
     default: present
 spec:
-    description: 
+    description:
         - Create virtual_k8s will create the object in the storage backend for namespace metadata.namespace
           https://docs.cloud.f5.com/docs/api/virtual-k8s
-    type: object (Virtual K8s)    
+    type: object (Virtual K8s)
 '''
 
 import time
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 

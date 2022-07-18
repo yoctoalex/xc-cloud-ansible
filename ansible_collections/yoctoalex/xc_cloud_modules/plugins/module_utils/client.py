@@ -17,6 +17,7 @@ try:
 except ImportError:
     import simplejson as _json
 
+
 class XcRestClient(object):
     def __init__(self, *args, **kwargs):
         self.params = kwargs
@@ -51,7 +52,7 @@ class XcRestClient(object):
     @property
     def api(self):
         return RestApi(
-            headers={ "Authorization": "APIToken {0}".format(self.api_token)},
+            headers={"Authorization": "APIToken {0}".format(self.api_token)},
             host=self.tenant
         )
 

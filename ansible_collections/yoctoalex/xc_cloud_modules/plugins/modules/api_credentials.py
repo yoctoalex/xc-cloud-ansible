@@ -10,7 +10,7 @@ DOCUMENTATION = r'''
 ---
 module: api_credentials
 short_description: Tenant Settings
-description: 
+description:
     - Receive current tenant settings.
 version_added: "0.0.1"
 options:
@@ -94,9 +94,9 @@ RETURN = r'''
 ---
 data:
     description:
-        - data is the response format based on the API credential type. 
-        - In case of API_CERTIFICATES, the response is the base64 encoded value of certificate in PKCS12 format. 
-        - In case of KUBE_CONFIG, the response is the base64 encoded value of the K8s kubeconfig file 
+        - data is the response format based on the API credential type.
+        - In case of API_CERTIFICATES, the response is the base64 encoded value of certificate in PKCS12 format.
+        - In case of KUBE_CONFIG, the response is the base64 encoded value of the K8s kubeconfig file
         - with contents as requested - cluster,namespace and base64 encoded certificate, key and CA.
     type: str
 name:
@@ -104,11 +104,6 @@ name:
         - Name of API credential record. It will be saved in metadata.
     type: str
 '''
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -141,7 +136,7 @@ class Parameters(AnsibleF5Parameters):
 class ModuleParameters(Parameters):
     @property
     def expiration_days(self):
-        return self._values['metadata']
+        return self._values['expiration_days']
 
     @property
     def name(self):
@@ -150,10 +145,6 @@ class ModuleParameters(Parameters):
     @property
     def namespace(self):
         return self._values['namespace']
-
-    @property
-    def expiration_days(self):
-        return self._values['expiration_days']
 
     @property
     def spec(self):
