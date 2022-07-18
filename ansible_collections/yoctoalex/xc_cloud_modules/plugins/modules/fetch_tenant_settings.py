@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020, F5 Networks Inc.
 # GNU General Public License v3.0 (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,14 +8,78 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
+module: fetch_tenant_settings
+short_description: Tenant Settings
+description: 
+    - Receive current tenant settings.
+version_added: "0.0.1"
 '''
 
 EXAMPLES = r'''
 ---
+- name: Fetch xC Cloud tenant details
+  hosts: webservers
+  collections:
+    - yoctoalex.xc_cloud_modules
+  connection: local
+
+  environment:
+    XC_API_TOKEN: "your_api_token"
+    XC_TENANT: "console.ves.volterra.io"
+
+  tasks:
+    - name: fetch current tenant details
+      fetch_tenant_settings:
+      register: tenant
 '''
 
 RETURN = r'''
 ---
+ctive_plan_transition_id:
+    description:
+        - Id of the plan transition request which is currently in state CREATING.
+    type: str
+company_name:
+    description:
+        - Company name of the tenant.
+    type: str
+domain:
+    description:
+        - Domain of the tenant.
+    type: str
+max_credentials_expiry:
+    description:
+        - CredentialsExpiry is a struct that holds max expiration days setting for the different credentials.
+    type: object
+name:
+    description:
+        - name will represent name of the tenant that is being accessed
+    type: name
+original_tenant:
+    description:
+        - orginal_tenant represent tenant id where the user belongs to
+    type: str
+otp_enabled:
+    description:
+        - OTP configuration for tenant scope.
+    type: bool
+otp_status:
+    description:
+        - OtpStatus can be either enabled/disabled or processing. Applying new policy can take time,
+          especially if tenant has many users so for this purpose processing state is introduced.
+    type: str
+scim_enabled:
+    description:
+        - Flag to show SCIM is enabled for specific tenant.
+    type: bool
+sso_enabled:
+    description:
+        - Flag to show SSO is enabled for specific tenant.
+    type: bool
+state:
+    description:
+        - Tenant states
+    type: bool
 '''
 
 try:

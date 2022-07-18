@@ -1,0 +1,38 @@
+- name: Configure Origin pool
+  hosts: webservers
+  collections:
+    - yoctoalex.xc_cloud_modules
+  connection: local
+
+  environment:
+    XC_API_TOKEN: "your_api_token"
+    XC_TENANT: "console.ves.volterra.io"
+
+  tasks:
+    - name: create origin pool
+      origin_pool:
+        state: present
+        metadata:
+          namespace: "default"
+          name: "demo-pool"
+        spec:
+          origin_servers:
+            - k8s_service:
+                service_name: "demo-app.default"
+                site_locator:
+                  virtual_site:
+                    tenant: "ves-io"
+                    namespace: "shared"
+                    name: "ves-io-all-res"
+                vk8s_networks:
+          port: 8080
+          loadbalancer_algorithm: "LB_OVERRIDE"
+          endpoint_selection: "LOCAL_PREFERRED"
+
+    - name: delete origin pool
+      origin_pool:
+        state: absent
+        metadata:
+          namespace: "default"
+          name: "demo-pool"
+        spec:

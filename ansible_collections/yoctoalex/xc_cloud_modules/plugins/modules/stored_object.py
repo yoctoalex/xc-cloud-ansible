@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020, F5 Networks Inc.
 # GNU General Public License v3.0 (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,14 +8,138 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
+module: stored_object
+short_description: Manage Service Policies
+description: 
+    - A service_policy object consists of an unordered list of predicates and a list of service policy rules.
+version_added: "0.0.1"
+options:
+    state:
+        description:
+            - When C(state) is C(present), ensures the object is created or modified.
+            - When C(state) is C(absent), ensures the object is removed.
+        type: str
+        choices:
+          - present
+          - absent
+          - fetch
+        default: present
+    
+    bytes_value:
+        description:
+            - Exclusive with [string_value] Binary object contents. Should be encoded in base64 scheme.
+        type: str
+    content_format:
+        description:
+            - The optional content format associated with object
+        type: str
+    description:
+        description:
+            - The optional description associated with object
+        type: str
+    mobile_sdk:
+        description:
+            - Describes attributes specific to object type - mobile-sdk
+        type: object
+    name:
+        description:
+            - Name of the stored_object.
+        type: str
+        required: True
+    namespace:
+        description:
+            - Namespace in which object is to be created
+        type: str
+        required: True
+    no_attributes:
+        description:
+            - This can be used for messages where no values are needed
+        type: object
+    object_type:
+        description:
+            - Type of the stored_object
+        type: str
+        required: True
+    string_value:
+        description:
+            - Exclusive with [bytes_value] String formatted contents
+        type: str
 '''
 
 EXAMPLES = r'''
 ---
+- name: Configure Service Policy
+  hosts: webservers
+  collections:
+    - yoctoalex.xc_cloud_modules
+  connection: local
+
+  environment:
+    XC_API_TOKEN: "your_api_token"
+    XC_TENANT: "console.ves.volterra.io"
+
+  tasks:
+    - name: upload swagger file
+      stored_object:
+        state: present
+        string_value: "{{ lookup('file', '../swagger.json') | string }}"
+        content_format: "json"
+        name: "demo-swagger"
+        object_type: "swagger"
+        namespace: "default"
 '''
 
 RETURN = r'''
 ---
+metadata:
+
+    creation_timestamp:
+        description:
+            - Creation date & time for the object
+        type: str
+        required: True
+    description:
+        description:
+            - The optional description associated with object
+        type: str
+    mobile_sdk:
+        description:
+            - Describes attributes specific to object type - mobile-sdk
+        type: object
+    name:
+        description:
+            - Name of the stored_object.
+        type: str
+        required: True
+    namespace:
+        description:
+            - Namespace in which object is to be created
+        type: str
+        required: True
+    no_attributes:
+        description:
+            - This can be used for messages where no values are needed
+        type: object
+    url:
+        description:
+            - Url of the stored object
+        type: str
+        required: True
+    version:
+        description:
+            - Version of the stored object
+        type: str
+        required: True    
+status:
+    type: str
+    choices:
+        - STORED_OBJECT_STATUS_NONE
+        - STORED_OBJECT_STATUS_CREATED
+        - STORED_OBJECT_STATUS_UPDATED
+        - STORED_OBJECT_STATUS_ALREADY_EXISTS
+    description:
+        - The stored object status represents status of create object response 
+          if object got created, updated or already exists.
 '''
 
 try:

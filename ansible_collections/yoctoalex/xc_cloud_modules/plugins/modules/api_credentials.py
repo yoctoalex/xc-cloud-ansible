@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020, F5 Networks Inc.
 # GNU General Public License v3.0 (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,14 +8,101 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
+module: api_credentials
+short_description: Tenant Settings
+description: 
+    - Receive current tenant settings.
+version_added: "0.0.1"
+options:
+    state:
+        description:
+            - When C(state) is C(present), ensures the object is created or modified.
+            - When C(state) is C(absent), ensures the object is removed.
+            - When C(state) is C(fetch), returns the object.
+        type: str
+        choices:
+          - present
+          - absent
+          - fetch
+        default: present
+    expiration_days:
+        type: int
+        description:
+            - Qty of days of service credential expiration.
+    name:
+        type: str
+        description:
+            - Name of API credential record. It will be saved in metadata.
+    namespace:
+        type: str
+        required: True
+        description:
+            - Value of namespace is always "system".
+    spec:
+        password:
+        api_type:
+            description:
+                - Types of API credential given when requesting credentials from volterra
+            type: str
+            choices:
+              - API_CERTIFICATE
+              - KUBE_CONFIG
+              - API_TOKEN
+              - SERVICE_API_TOKEN
+              - SERVICE_API_CERTIFICATE
+              - SERVICE_KUBE_CONFIG
+              - SITE_GLOBAL_KUBE_CONFIG
+              - SCIM_API_TOKEN
+              - SERVICE_SITE_GLOBAL_KUBE_CONFIG
+            default: API_CERTIFICATE
+        virtual_k8s_name:
+            description:
+                - Name of virtual K8s cluster. Applicable for KUBE_CONFIG.
+            type: str
+        virtual_k8s_namespace:
+            description:
+                - Namespace of virtual K8s cluster. Applicable for KUBE_CONFIG.
+            type: str
 '''
 
 EXAMPLES = r'''
 ---
+- name: Manage API Credentials
+  hosts: webservers
+  collections:
+    - yoctoalex.xc_cloud_modules
+  connection: local
+
+  environment:
+    XC_API_TOKEN: "your_api_token"
+    XC_TENANT: "console.ves.volterra.io"
+
+  tasks:
+    - name: create vk8s credentials
+      api_credentials:
+        state: present
+        expiration_days: 5
+        name: "demo-credentials"
+        spec:
+          api_type: "KUBE_CONFIG"
+          virtual_k8s_name: "vk8s"
+          virtual_k8s_namespace: "default"
+      register: credentials
 '''
 
 RETURN = r'''
 ---
+data:
+    description:
+        - data is the response format based on the API credential type. 
+        - In case of API_CERTIFICATES, the response is the base64 encoded value of certificate in PKCS12 format. 
+        - In case of KUBE_CONFIG, the response is the base64 encoded value of the K8s kubeconfig file 
+        - with contents as requested - cluster,namespace and base64 encoded certificate, key and CA.
+    type: str
+name:
+    description:
+        - Name of API credential record. It will be saved in metadata.
+    type: str
 '''
 
 try:

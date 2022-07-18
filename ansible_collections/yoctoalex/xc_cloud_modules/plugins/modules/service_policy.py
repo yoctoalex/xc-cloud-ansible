@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020, F5 Networks Inc.
 # GNU General Public License v3.0 (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,14 +8,152 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
+module: service_policy
+short_description: Manage Service Policies
+description: 
+    - A service_policy object consists of an unordered list of predicates and a list of service policy rules.
+version_added: "0.0.1"
+options:
+    metadata:
+        annotations:
+            description: 
+                - Annotations is an unstructured key value map stored with a resource
+                  that may be set by external tools to store and retrieve arbitrary metadata.
+                  They are not queryable and should be preserved when modifying objects.
+            type: object
+        description:
+            description:
+                - Human readable description for the object
+            type: str
+        disable:
+            description:
+                - A value of true will administratively disable the object
+            type: bool
+        labels:
+            description:
+                - Map of string keys and values that can be used to organize and categorize (scope and select)
+                  objects as chosen by the user. Values specified here will be used by selector expression
+            type: object
+        name:
+            type: str
+            required: True
+            description:
+                - This is the name of configuration object. It has to be unique within the namespace. 
+                  It can only be specified during create API and cannot be changed during replace API.
+                  The value of name has to follow DNS-1035 format.
+        namespace:
+            description:
+                - This defines the workspace within which each the configuration object is to be created.
+                  Must be a DNS_LABEL format
+            type: str
+    state:
+        description:
+            - When C(state) is C(present), ensures the object is created or modified.
+            - When C(state) is C(absent), ensures the object is removed.
+            - When C(state) is C(fetch), returns the object.
+        type: str
+        choices:
+          - present
+          - absent
+          - fetch
+        default: present
+    spec:
+        type: object (Service Policy)
+        description:
+            - Shape of the Service Policy) specification
+              https://docs.cloud.f5.com/docs/api/service-policy
+    patch:
+        type: bool
+        description: Merge changes with existing on cloud when True
+        default: False
 '''
 
 EXAMPLES = r'''
 ---
+- name: Configure Service Policy
+  hosts: webservers
+  collections:
+    - yoctoalex.xc_cloud_modules
+  connection: local
+
+  environment:
+    XC_API_TOKEN: "your_api_token"
+    XC_TENANT: "console.ves.volterra.io"
+
+  tasks:
+    - name: create service policy
+      service_policy:
+        state: present
+        metadata:
+          namespace: "default"
+          name: "demo-policy"
+        spec:
+          algo: "FIRST_MATCH"
+          any_server: {}
+          rule_list:
+            rules:
+              - metadata:
+                  name: "deny-all-except-api"
+                spec:
+                  action: "DENY"
+                  path:
+                    prefix_values:
+                      - "/api/v1/"
+                  api_group_matcher:
+                    match:
+                      - "ves-io-api-def-api-def-all-operations"
+                    invert_matcher: True
+                  challenge_action: "DEFAULT_CHALLENGE"
+                  waf_action:
+                    none: {}
+              - metadata:
+                  name: "allow-other"
+                spec:
+                  action: "ALLOW"
+                  challenge_action: "DEFAULT_CHALLENGE"
+                  waf_action:
+                    none: { }
 '''
 
 RETURN = r'''
 ---
+metadata:
+    annotations:
+        description: 
+            - Annotations is an unstructured key value map stored with a resource
+              that may be set by external tools to store and retrieve arbitrary metadata.
+              They are not queryable and should be preserved when modifying objects.
+        type: object
+    description:
+        description:
+            - Human readable description for the object
+        type: str
+    disable:
+        description:
+            - A value of true will administratively disable the object
+        type: bool
+    labels:
+        description:
+            - Map of string keys and values that can be used to organize and categorize (scope and select)
+              objects as chosen by the user. Values specified here will be used by selector expression
+        type: object
+    name:
+        type: str
+        required: True
+        description:
+            - This is the name of configuration object. It has to be unique within the namespace. 
+              It can only be specified during create API and cannot be changed during replace API.
+              The value of name has to follow DNS-1035 format.
+    namespace:
+        description:
+            - This defines the workspace within which each the configuration object is to be created.
+              Must be a DNS_LABEL format
+        type: str
+spec:
+    type: object (Service Policy)
+    description:
+        - Shape of the Service Policy) specification
+          https://docs.cloud.f5.com/docs/api/service-policy
 '''
 
 try:

@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright: (c) 2020, F5 Networks Inc.
 # GNU General Public License v3.0 (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,14 +8,244 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
+module: application_firewall
+short_description: Manage xC Application Firewall
+description: 
+    - WAF Configuration
+version_added: "0.0.1"
+options:
+    metadata:
+        annotations:
+            description: 
+                - Annotations is an unstructured key value map stored with a resource
+                  that may be set by external tools to store and retrieve arbitrary metadata.
+                  They are not queryable and should be preserved when modifying objects.
+            type: object
+        description:
+            description:
+                - Human readable description for the object
+            type: str
+        disable:
+            description:
+                - A value of true will administratively disable the object
+            type: bool
+        labels:
+            description:
+                - Map of string keys and values that can be used to organize and categorize (scope and select)
+                  objects as chosen by the user. Values specified here will be used by selector expression
+            type: object
+        name:
+            type: str
+            required: True
+            description:
+                - This is the name of configuration object. It has to be unique within the namespace. 
+                  It can only be specified during create API and cannot be changed during replace API.
+                  The value of name has to follow DNS-1035 format.
+        namespace:
+            description:
+                - This defines the workspace within which each the configuration object is to be created.
+                  Must be a DNS_LABEL format
+            type: str
+    state:
+        description:
+            - When C(state) is C(present), ensures the object is created or modified.
+            - When C(state) is C(absent), ensures the object is removed.
+            - When C(state) is C(fetch), returns the object.
+        type: str
+        choices:
+          - present
+          - absent
+          - fetch
+        default: present
+    spec:
+        allow_all_response_codes:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+        allowed_response_codes:
+            type: object (Allowed Response Codes)
+            description:
+                - List of HTTP response status codes that are allowed
+        blocking:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+        blocking_page:
+            type: object (Custom Blocking Page)
+            description:
+                - Custom blocking response page body
+        bot_protection_setting:
+            type: object (BotProtectionSetting)
+            description:
+                - Configuration of WAF Bot Protection
+        custom_anonymization:
+            type: object (AnonymizationSetting)
+            description:
+                - Anonymization settings which is a list of HTTP headers, parameters and cookies
+        default_anonymization:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+        default_bot_setting:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+        default_detection_settings:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+        detection_settings:
+            type: object (Detection Settings)
+            description:
+                - Specifies detection settings to be used by WAF
+        disable_anonymization:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+        monitoring:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+        use_default_blocking_page:
+            type: object (Empty)
+            description:
+                - This can be used for messages where no values are needed
+    patch:
+        type: bool
+        description: Merge changes with existing on cloud when True
+        default: False
 '''
 
 EXAMPLES = r'''
 ---
+- name: Configure Application Firewall on XC Cloud
+  hosts: webservers
+  collections:
+    - yoctoalex.xc_cloud_modules
+  connection: local
+
+  environment:
+    XC_API_TOKEN: "your_api_token"
+    XC_TENANT: "console.ves.volterra.io"
+    
+  tasks:
+    - name: create app firewall
+      application_firewall:
+        state: present
+        metadata:
+          namespace: "default"
+          name: "demo-fw"
+        spec:
+          blocking: {}
+          detection_settings:
+            signature_selection_setting:
+              attack_type_settings:
+                disabled_attack_types:
+                  - "ATTACK_TYPE_COMMAND_EXECUTION"
+              high_medium_low_accuracy_signatures: {}
+            enable_suppression: { }
+            enable_threat_campaigns: { }
+            violation_settings:
+              disabled_violation_types:
+                - "VIOL_HTTP_PROTOCOL_BAD_HTTP_VERSION"
+          bot_protection_setting:
+            malicious_bot_action: "BLOCK"
+            suspicious_bot_action: "REPORT"
+            good_bot_action: "REPORT"
+          allow_all_response_codes: {}
+          default_anonymization: {}
+          blocking_page:
+            response_code: "Forbidden"
+            blocking_page: "string:///PGh0bWw+PGhlYWQ+PHRpdGxlPlJlcXVlc3QgUmVqZWN0ZWQ8L3RpdGxlPjwvaGVhZD48Ym9keT5UaGUgcmVxdWVzdGVkIFVSTCB3YXMgcmVqZWN0ZWQuIFBsZWFzZSBjb25zdWx0IHdpdGggeW91ciBhZG1pbmlzdHJhdG9yLjxici8+PGJyLz5Zb3VyIHN1cHBvcnQgSUQgaXM6IHt7cmVxdWVzdF9pZH19PGJyLz48YnIvPjxhIGhyZWY9ImphdmFzY3JpcHQ6aGlzdG9yeS5iYWNrKCkiPltHbyBCYWNrXTwvYT48L2JvZHk+PC9odG1sPg=="
 '''
 
 RETURN = r'''
 ---
+metadata:
+    annotations:
+        description: 
+            - Annotations is an unstructured key value map stored with a resource
+              that may be set by external tools to store and retrieve arbitrary metadata.
+              They are not queryable and should be preserved when modifying objects.
+        type: object
+    description:
+        description:
+            - Human readable description for the object
+        type: str
+    disable:
+        description:
+            - A value of true will administratively disable the object
+        type: bool
+    labels:
+        description:
+            - Map of string keys and values that can be used to organize and categorize (scope and select)
+              objects as chosen by the user. Values specified here will be used by selector expression
+        type: object
+    name:
+        type: str
+        required: True
+        description:
+            - This is the name of configuration object. It has to be unique within the namespace. 
+              It can only be specified during create API and cannot be changed during replace API.
+              The value of name has to follow DNS-1035 format.
+    namespace:
+        description:
+            - This defines the workspace within which each the configuration object is to be created.
+              Must be a DNS_LABEL format
+        type: str
+spec:
+    allow_all_response_codes:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
+    allowed_response_codes:
+        type: object (Allowed Response Codes)
+        description:
+            - List of HTTP response status codes that are allowed
+    blocking:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
+    blocking_page:
+        type: object (Custom Blocking Page)
+        description:
+            - Custom blocking response page body
+    bot_protection_setting:
+        type: object (BotProtectionSetting)
+        description:
+            - Configuration of WAF Bot Protection
+    custom_anonymization:
+        type: object (AnonymizationSetting)
+        description:
+            - Anonymization settings which is a list of HTTP headers, parameters and cookies
+    default_anonymization:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
+    default_bot_setting:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
+    default_detection_settings:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
+    detection_settings:
+        type: object (Detection Settings)
+        description:
+            - Specifies detection settings to be used by WAF
+    disable_anonymization:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
+    monitoring:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
+    use_default_blocking_page:
+        type: object (Empty)
+        description:
+            - This can be used for messages where no values are needed
 '''
 
 try:
