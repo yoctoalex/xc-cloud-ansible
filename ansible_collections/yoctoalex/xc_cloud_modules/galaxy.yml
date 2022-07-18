@@ -1,6 +1,6 @@
 namespace: yoctoalex
 name: xc_cloud_modules
-version: 0.0.4
+version: 0.0.5
 readme: README.md
 authors:
   - Alex Shemyakin
